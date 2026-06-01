@@ -1,0 +1,41 @@
+# Study Quiz — MVP
+
+Fullstack quiz app for study platforms: upload a PDF or paste text, AI extracts multiple-choice questions with explanations, then practice with instant feedback.
+
+## Stack
+
+- **Client:** React 19, Vite, TypeScript, Tailwind CSS
+- **Server:** Express, `pdf-parse`, OpenAI (`gpt-4o-mini`)
+
+## Quick start
+
+```bash
+npm run install:all
+cp server/.env.example server/.env
+# Add OPENAI_API_KEY to server/.env (optional for demo)
+npm run dev
+```
+
+- App: http://localhost:5173  
+- API: http://localhost:3001  
+
+Without `OPENAI_API_KEY`, PDF/text upload returns built-in sample questions so you can try the UI immediately.
+
+## Features (MVP)
+
+- Upload PDF or paste exam text → AI JSON extraction
+- One-question-at-a-time quiz with check / next flow
+- Explanations for correct and incorrect choices
+- Progress bar and results summary with review
+- Responsive layout, minimal correct-answer pulse animation
+- Sample quiz without uploading
+
+## API
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/health` | Health + AI configured flag |
+| GET | `/api/sample` | Demo questions |
+| POST | `/api/extract` | `multipart` field `pdf` or JSON `{ "text": "..." }` |
+
+Response shape matches the quiz JSON schema (`questions` array).
