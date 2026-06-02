@@ -1,18 +1,11 @@
 import { useState } from "react";
-import type { AnswerRecord } from "../App";
-import type { QuizQuestion } from "../types";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "./ProgressBar.jsx";
 
-interface QuizViewProps {
-  questions: QuizQuestion[];
-  onFinish: (records: AnswerRecord[]) => void;
-}
-
-export default function QuizView({ questions, onFinish }: QuizViewProps) {
+export default function QuizView({ questions, onFinish }) {
   const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState(null);
   const [revealed, setRevealed] = useState(false);
-  const [, setRecords] = useState<AnswerRecord[]>([]);
+  const [, setRecords] = useState([]);
 
   const q = questions[index];
   const isLast = index === questions.length - 1;
@@ -51,7 +44,7 @@ export default function QuizView({ questions, onFinish }: QuizViewProps) {
     setRevealed(false);
   };
 
-  const getOptionClass = (opt: string) => {
+  const getOptionClass = (opt) => {
     const base =
       "w-full rounded-xl border px-4 py-3 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 disabled:cursor-default";
 
@@ -103,9 +96,7 @@ export default function QuizView({ questions, onFinish }: QuizViewProps) {
 
         {revealed && (
           <div className="mt-6 space-y-3 rounded-xl bg-study-50 p-4 text-sm leading-relaxed">
-            <p
-              className={`font-semibold ${isCorrect ? "text-accent" : "text-red-700"}`}
-            >
+            <p className={`font-semibold ${isCorrect ? "text-accent" : "text-red-700"}`}>
               {isCorrect ? "Correct!" : "Not quite — see below."}
             </p>
             <p className="text-study-700">
@@ -145,3 +136,4 @@ export default function QuizView({ questions, onFinish }: QuizViewProps) {
     </div>
   );
 }
+

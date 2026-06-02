@@ -1,14 +1,5 @@
 import { useRef, useState } from "react";
 
-interface HomeViewProps {
-  aiConfigured: boolean;
-  loading: boolean;
-  error: string | null;
-  onSample: () => void;
-  onPdf: (file: File) => void;
-  onText: (text: string) => void;
-}
-
 export default function HomeView({
   aiConfigured,
   loading,
@@ -16,13 +7,13 @@ export default function HomeView({
   onSample,
   onPdf,
   onText,
-}: HomeViewProps) {
-  const fileRef = useRef<HTMLInputElement>(null);
+}) {
+  const fileRef = useRef(null);
   const [pasteText, setPasteText] = useState("");
-  const [tab, setTab] = useState<"pdf" | "text">("pdf");
+  const [tab, setTab] = useState("pdf");
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFile = (e) => {
+    const file = e.target.files && e.target.files[0];
     if (file) onPdf(file);
     e.target.value = "";
   };
@@ -90,7 +81,7 @@ export default function HomeView({
             <button
               type="button"
               disabled={loading}
-              onClick={() => fileRef.current?.click()}
+              onClick={() => fileRef.current && fileRef.current.click()}
               className="flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-study-200 bg-study-50 px-4 py-10 text-study-600 transition-colors hover:border-accent hover:bg-accent-light disabled:opacity-60"
             >
               <span className="text-3xl" aria-hidden>
@@ -144,3 +135,4 @@ export default function HomeView({
     </div>
   );
 }
+

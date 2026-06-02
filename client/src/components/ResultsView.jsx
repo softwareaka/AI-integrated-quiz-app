@@ -1,19 +1,4 @@
-import type { AnswerRecord } from "../App";
-import type { QuizQuestion } from "../types";
-
-interface ResultsViewProps {
-  questions: QuizQuestion[];
-  answers: AnswerRecord[];
-  onRestart: () => void;
-  onRetry: () => void;
-}
-
-export default function ResultsView({
-  questions,
-  answers,
-  onRestart,
-  onRetry,
-}: ResultsViewProps) {
+export default function ResultsView({ questions, answers, onRestart, onRetry }) {
   const correctCount = answers.filter((a) => a.correct).length;
   const total = questions.length;
   const pct = total ? Math.round((correctCount / total) * 100) : 0;
@@ -50,7 +35,7 @@ export default function ResultsView({
         <h2 className="font-display text-lg font-semibold text-study-800">Review</h2>
         {questions.map((q, i) => {
           const ans = answers.find((a) => a.questionIndex === i);
-          const ok = ans?.correct;
+          const ok = ans && ans.correct;
           return (
             <details
               key={i}
@@ -89,3 +74,4 @@ export default function ResultsView({
     </div>
   );
 }
+

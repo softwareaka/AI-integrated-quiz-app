@@ -1,32 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
-import { checkHealth, extractFromPdf, extractFromText, loadSampleQuiz } from "./api";
-import Header from "./components/Header";
-import HomeView from "./components/HomeView";
-import QuizView from "./components/QuizView";
-import ResultsView from "./components/ResultsView";
-import type { AppView, QuizQuestion } from "./types";
-
-export interface AnswerRecord {
-  questionIndex: number;
-  selected: string;
-  correct: boolean;
-}
+import { checkHealth, extractFromPdf, extractFromText, loadSampleQuiz } from "./api.js";
+import Header from "./components/Header.jsx";
+import HomeView from "./components/HomeView.jsx";
+import QuizView from "./components/QuizView.jsx";
+import ResultsView from "./components/ResultsView.jsx";
 
 export default function App() {
-  const [view, setView] = useState<AppView>("home");
-  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
-  const [answers, setAnswers] = useState<AnswerRecord[]>([]);
+  const [view, setView] = useState("home");
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
   const [aiConfigured, setAiConfigured] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     checkHealth()
-      .then((h) => setAiConfigured(h.aiConfigured))
+      .then((h) => setAiConfigured(Boolean(h.aiConfigured)))
       .catch(() => setAiConfigured(false));
   }, []);
 
-  const startQuiz = useCallback((qs: QuizQuestion[]) => {
+  const startQuiz = useCallback((qs) => {
     setQuestions(qs);
     setAnswers([]);
     setError(null);
@@ -46,7 +39,7 @@ export default function App() {
     }
   };
 
-  const handlePdf = async (file: File) => {
+  const handlePdf = async (file) => {
     setLoading(true);
     setError(null);
     try {
@@ -59,7 +52,7 @@ export default function App() {
     }
   };
 
-  const handleText = async (text: string) => {
+  const handleText = async (text) => {
     setLoading(true);
     setError(null);
     try {
@@ -72,7 +65,7 @@ export default function App() {
     }
   };
 
-  const handleFinish = (records: AnswerRecord[]) => {
+  const handleFinish = (records) => {
     setAnswers(records);
     setView("results");
   };
@@ -91,10 +84,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Header
-        onHome={handleRestart}
-        showHome={view !== "home"}
-      />
+      <Header onHome={handleRestart} showHome={view !== "home"} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 sm:px-6 sm:py-10">
         {view === "home" && (
           <HomeView
@@ -121,3 +111,4 @@ export default function App() {
     </div>
   );
 }
+

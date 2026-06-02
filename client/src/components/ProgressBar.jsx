@@ -1,9 +1,4 @@
-interface ProgressBarProps {
-  current: number;
-  total: number;
-}
-
-export default function ProgressBar({ current, total }: ProgressBarProps) {
+export default function ProgressBar({ current, total }) {
   const pct = Math.round((current / total) * 100);
 
   return (
@@ -29,3 +24,4 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
     </div>
   );
 }
+
