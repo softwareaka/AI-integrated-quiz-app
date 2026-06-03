@@ -4,7 +4,7 @@ Fullstack quiz app for study platforms: upload a PDF or paste text, AI extracts 
 
 ## Stack
 
-- **Client:** React 19, Vite, TypeScript, Tailwind CSS
+- **Client:** React 19, Vite, JavaScript (JSX), Tailwind CSS
 - **Server:** Express, `pdf-parse`, OpenAI (`gpt-4o-mini`)
 
 ## Quick start
@@ -39,3 +39,14 @@ Without `OPENAI_API_KEY`, PDF/text upload returns built-in sample questions so y
 | POST | `/api/extract` | `multipart` field `pdf` or JSON `{ "text": "..." }` |
 
 Response shape matches the quiz JSON schema (`questions` array).
+
+## Deploy on Vercel (frontend)
+
+This repo has **no TypeScript** — the client build is only `vite build`.
+
+1. Push latest code to GitHub.
+2. In Vercel → **Project Settings → General → Root Directory**: leave empty (uses repo root `vercel.json`) **or** set to `client` (uses `client/vercel.json`).
+3. In **Build & Development Settings**, clear any custom **Build Command** override. It must **not** contain `tsc`. Use the default from `vercel.json` or `vite build`.
+4. **Output Directory**: `client/dist` (root deploy) or `dist` (if root directory is `client`).
+
+The API (`server/`) must be hosted separately (e.g. Render, Railway) for PDF/AI features in production; set `OPENAI_API_KEY` there and proxy `/api` or point the client to that URL.
