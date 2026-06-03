@@ -40,13 +40,15 @@ Without `OPENAI_API_KEY`, PDF/text upload returns built-in sample questions so y
 
 Response shape matches the quiz JSON schema (`questions` array).
 
-## Deploy on Vercel (frontend)
+## Deploy on Vercel
 
-This repo has **no TypeScript** — the client build is only `vite build`.
+This repo deploys the **React app** and **API routes** (`/api/*`) on one Vercel project.
 
 1. Push latest code to GitHub.
-2. In Vercel → **Project Settings → General → Root Directory**: leave empty (uses repo root `vercel.json`) **or** set to `client` (uses `client/vercel.json`).
-3. In **Build & Development Settings**, clear any custom **Build Command** override. It must **not** contain `tsc`. Use the default from `vercel.json` or `vite build`.
-4. **Output Directory**: `client/dist` (root deploy) or `dist` (if root directory is `client`).
+2. Use repo root (default `vercel.json`) — do **not** set Root Directory to `client` only.
+3. Build command: `npm run build --prefix client` (no `tsc`).
+4. In Vercel → **Environment Variables**, add `OPENAI_API_KEY` for real AI extraction (optional; without it, uploads use sample questions).
 
-The API (`server/`) must be hosted separately (e.g. Render, Railway) for PDF/AI features in production; set `OPENAI_API_KEY` there and proxy `/api` or point the client to that URL.
+**Sample quiz** works offline in the browser (bundled data). **PDF/text** use Vercel serverless functions in `/api`.
+
+For a separate Express host, set `VITE_API_URL` in the client to that URL.

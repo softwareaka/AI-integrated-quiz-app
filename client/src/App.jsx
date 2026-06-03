@@ -10,13 +10,15 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [aiConfigured, setAiConfigured] = useState(false);
+  const [apiAvailable, setApiAvailable] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    checkHealth()
-      .then((h) => setAiConfigured(Boolean(h.aiConfigured)))
-      .catch(() => setAiConfigured(false));
+    checkHealth().then((h) => {
+      setAiConfigured(Boolean(h.aiConfigured));
+      setApiAvailable(Boolean(h.ok));
+    });
   }, []);
 
   const startQuiz = useCallback((qs) => {
@@ -89,6 +91,7 @@ export default function App() {
         {view === "home" && (
           <HomeView
             aiConfigured={aiConfigured}
+            apiAvailable={apiAvailable}
             loading={loading}
             error={error}
             onSample={handleSample}

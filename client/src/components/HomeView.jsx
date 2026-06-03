@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 
 export default function HomeView({
   aiConfigured,
+  apiAvailable,
   loading,
   error,
   onSample,
@@ -28,11 +29,17 @@ export default function HomeView({
           Upload a PDF or paste exam content. AI extracts multiple-choice questions with
           explanations so you can practice with instant feedback.
         </p>
-        {!aiConfigured && (
+        {!apiAvailable && (
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+            <strong>API offline.</strong> Sample quiz still works. PDF/text needs the API
+            (redeploy or run <code className="text-xs">npm run dev</code> locally).
+          </p>
+        )}
+        {apiAvailable && !aiConfigured && (
           <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            <strong>Demo mode:</strong> Add <code className="text-xs">OPENAI_API_KEY</code> in{" "}
-            <code className="text-xs">server/.env</code> for real PDF extraction. Until then,
-            uploads use sample React &amp; web questions.
+            <strong>Demo mode:</strong> Add <code className="text-xs">OPENAI_API_KEY</code> in
+            Vercel env vars (or <code className="text-xs">server/.env</code> locally) for real AI
+            extraction. Until then, uploads use sample questions.
           </p>
         )}
       </section>
